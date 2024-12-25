@@ -1,3 +1,13 @@
+/*****************************************************************************
+* | File      	:   Demo_dop_manip+module.c
+* | Author      :   AVANTI TEAM
+* | Function    :
+* | Info        :
+*----------------
+* |	This version:   V0.1
+* | Date        :   2024-27-11
+* | Info        :
+******************************************************************************/
 #include "include/Union.h"
 
 #define pos_1 23
@@ -283,4 +293,4 @@ int main()
 
 }
 
-// gcc Demo_dop_mapip+madule.c src/*.c -o Demo_dop_mapip+madule -lwiringPi -lpthread -lm
+// gcc Demo_dop_manip+module.c src/*.c -o Demo_dop_manip+module -lwiringPi -lpthread -lm
