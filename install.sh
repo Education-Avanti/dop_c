@@ -8,25 +8,23 @@ fi
 
 # Скачивание репозитория в директорию Desktop
 echo "Скачиваю репозиторий с ссылки https://github.com/Education-Avanti/dop_c.git"
-git clone "https://github.com/Education-Avanti/dop_c.git" ~/Desktop
-
-# Извлечение имени репозитория (имя папки)
-REPO_NAME=$(basename "dop_c" .git)
+cd /home/admin/Desktop
+git clone https://github.com/Education-Avanti/dop_c.git
 
 # Переход в директорию репозитория
-cd ~/Desktop/"$REPO_NAME" || { echo "Ошибка: не удалось зайти в директорию $REPO_NAME"; exit 1; }
+cd /home/admin/Desktop/dop_c || { echo "Ошибка: не удалось зайти в директорию dop_c"; exit 1; }
 
 if [ -z "git clone https://github.com/WiringPi/WiringPi.git" ]; then
   echo "Ошибка: не указана ссылка на репозиторий."
   exit 1
 fi
 
-echo "Скачиваю репозиторий с ссылки git clone https://github.com/WiringPi/WiringPi.git"
-git clone "git clone https://github.com/WiringPi/WiringPi.git" ~/Desktop/"$REPO_NAME"
+echo "Скачиваю репозиторий с ссылки git clone git clone https://github.com/WiringPi/WiringPi.git"
+git clone https://github.com/WiringPi/WiringPi.git
 
 # Выполнение устоновки
 echo "Запуск установки библиотеки WiringPi"
-cd wiringPi
+cd WiringPi
 ./build
 cd ../
 
