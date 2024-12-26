@@ -1,5 +1,4 @@
-
-VERSION=$(shell cat ../VERSION)
+VERSION=$(shell cat VERSION)
 DESTDIR?=/usr
 PREFIX?=/local
 
@@ -9,33 +8,35 @@ ifneq ($V,1)
 Q ?= @
 endif
 
-STATIC=dop_lib_c.a
-DYNAMIC=dop_lib_c.so.$(VERSION)
+STATIC=libdopLibc.a
+DYNAMIC=libdopLibc.so.$(VERSION)
 
 #DEBUG	= -g -O0
 DEBUG	= -O2
 CC	?= gcc
-INCLUDE	= -I.
+INCLUDE	= -I. -I/path/to/wiringPi/includes
 DEFS	= -D_GNU_SOURCE
 CFLAGS	= $(DEBUG) $(DEFS) -Wformat=2 -Wall -Wextra -Winline $(INCLUDE) -pipe -fPIC $(EXTRA_CFLAGS)
-#CFLAGS	= $(DEBUG) $(DEFS) -Wformat=2 -Wall -Wextra -Wconversion -Winline $(INCLUDE) -pipe -fPIC
 
-LIBS    = -lwiringPi -lm -lpthread
+LIBS    = -lm -lpthread -lrt -lcrypt -lwiringPi 
 
 ###############################################################################
 
-SRC	=	src/Accel_gyro_lyb.c	\
-		src/Arm.c				\
-		src/Button_lib.c		\
-		src/Color_module_lib.c	\
-		src/Config.c			\
-		src/DEV_Config.c		\
-		src/Joystick_lib.c		\
-		src/Led_lib.c			\
-		src/Obstacle_lib.c		\
-		src/Relay_lib.c			\
-		src/Servo_lib.c			\
-		src/TCS34725.c			\
+
+SRC	=	$(addprefix src/,\
+			Accel_gyro_lib.c	\
+			Arm.c				\
+			Button_lib.c		\
+			Color_module_lib.c	\
+			Config.c			\
+			DEV_Config.c		\
+			Joystick_lib.c		\
+			Led_lib.c			\
+			Obstacle_lib.c		\
+			Relay_lib.c			\
+			Servo_lib.c			\
+			TCS34725.c)
+
 
 HEADERS =	$(shell ls include/*.h)
 
@@ -45,27 +46,25 @@ all:		$(DYNAMIC)
 
 .PHONY:	static
 static:	
-		$Q cat noMoreStatic
+		$Q echo "[Static libraries are deprecated]"
 
 $(DYNAMIC):	$(OBJ)
 	$Q echo "[Link (Dynamic)]"
-	$Q $(CC) -shared -Wl,-soname,dop_lib_c.so$(WIRINGPI_SONAME_SUFFIX) -o dop_lib_c.so.$(VERSION) $(OBJ) $(LIBS)
+	$Q $(CC) -shared -Wl,-soname,libdopLibc.so -o libdopLibc.so.$(VERSION) $(OBJ) $(LIBS)
 
 .c.o:
 	$Q echo [Compile] $<
 	$Q $(CC) -c $(CFLAGS) $< -o $@
 
-
 .PHONY:	clean
 clean:
 	$Q echo "[Clean]"
-	$Q rm -f $(OBJ) $(OBJ_I2C) *~ core tags Makefile.bak dop_lib_c.*
+	$Q rm -f $(OBJ) *~ core tags Makefile.bak libdopLibc.*
 
 .PHONY:	tags
 tags:	$(SRC)
 	$Q echo [ctags]
 	$Q ctags $(SRC)
-
 
 .PHONY:	install
 install:	$(DYNAMIC)
@@ -74,68 +73,19 @@ install:	$(DYNAMIC)
 	$Q install -m 0644 $(HEADERS)					$(DESTDIR)$(PREFIX)/include
 	$Q echo "[Install Dynamic Lib]"
 	$Q install -m 0755 -d						$(DESTDIR)$(PREFIX)/lib
-	$Q install -m 0755 dop_lib_c.so.$(VERSION)			$(DESTDIR)$(PREFIX)/lib/dop_lib_c.so.$(VERSION)
-	$Q ln -sf $(DESTDIR)$(PREFIX)/lib/dop_lib_c.so.$(VERSION)	$(DESTDIR)/lib/dop_lib_c.so
+	$Q install -m 0755 libdopLibc.so.$(VERSION)	$(DESTDIR)$(PREFIX)/lib/libdopLibc.so.$(VERSION)
+	$Q ln -sf $(DESTDIR)$(PREFIX)/lib/libdopLibc.so.$(VERSION)	$(DESTDIR)/lib/libdopLibc.so
 	$Q $(LDCONFIG)
 
-.PHONY: check-deb-destdir
-check-deb-destdir:
-ifndef DEB_DESTDIR
-	$(error DEB_DESTDIR is undefined)
-endif
-
-.PHONY:	install-deb
-install-deb:	$(DYNAMIC) check-deb-destdir
-	$Q echo "[Install Headers: deb]"
-	$Q install -m 0755 -d							$(DEB_DESTDIR)/usr/include
-	$Q install -m 0644 $(HEADERS)						$(DEB_DESTDIR)/usr/include
-	$Q echo "[Install Dynamic Lib: deb]"
-	install -m 0755 -d							$(DEB_DESTDIR)/usr/lib
-	install -m 0755 dop_lib_c.so.$(VERSION)				$(DEB_DESTDIR)/usr/lib/dop_lib_c.so.$(VERSION)
-	ln -sf $(DEB_DESTDIR)/usr/lib/dop_lib_c.so.$(VERSION)	$(DEB_DESTDIR)/usr/lib/dop_lib_c.so
-
-.PHONY:	uninstall
+.PHONY: uninstall
 uninstall:
-	$Q echo "[UnInstall]"
+	$Q echo "[Uninstall]"
 	$Q cd $(DESTDIR)$(PREFIX)/include/ && rm -f $(HEADERS)
-	$Q cd $(DESTDIR)$(PREFIX)/lib/     && rm -f dop_lib_c.*
+	$Q cd $(DESTDIR)$(PREFIX)/lib/ && rm -f libdopLibc.*
 	$Q $(LDCONFIG)
 
-
-.PHONY:	depend
+.PHONY: depend
 depend:
-	makedepend -Y $(SRC) $(SRC_I2C)
+	makedepend -Y $(SRC)
 
-# DO NOT DELETE
-
-###################################################################################################
-
-
-# #DIR_FONTS = ./Fonts
-# DIR_OBJ = ./TCS34725
-# DIR_BIN = ./bin
-
-# OBJ_C = $(wildcard ${DIR_OBJ}/*.c)
-# OBJ_O = $(patsubst %.c,${DIR_BIN}/%.o,$(notdir ${OBJ_C}))
-
-# TARGET = main
-# #BIN_TARGET = ${DIR_BIN}/${TARGET}
-
-# CC = gcc
-
-# DEBUG = -g -O0 -Wall
-# CFLAGS += $(DEBUG) 
-
-# LIB = -lwiringPi -lpthread -lm
-
-# ${TARGET}:${OBJ_O}
-# 	$(CC) $(CFLAGS) $(OBJ_O) -o $@  $(LIB)
-
-# ${DIR_BIN}/%.o : $(DIR_OBJ)/%.c
-# 	$(CC) $(CFLAGS) -c  $< -o $@  $(LIB)
-
-
-	
-# clean :
-# 	rm $(DIR_BIN)/*.* 
-# 	rm $(TARGET) 
+# DO NOT DELETE THIS LINE -- make depend depends on it.
