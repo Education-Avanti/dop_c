@@ -11,5 +11,5 @@ int main()
     delay(1000);
     return 0;
 }
-// gcc proverka.c -o proverka -lm -lwiringPi -lptrhread -ldopLibc
+// gcc proverka.c -o proverka -lm -lwiringPi -lpthread -ldopLibc
 // ./proverka
