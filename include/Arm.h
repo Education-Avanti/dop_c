@@ -18,6 +18,9 @@
 #define DEVICE_PREFIX "/dev/"
 #define TIMEOUT_MS 3000
 
+void handle_continue(int signo);
+
+void handle_signal(int signo);
 
 int configure_port(int fd);
 
