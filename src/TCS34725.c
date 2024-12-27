@@ -175,10 +175,10 @@ static void TCS34725_Set_Interrupt_Threshold(UWORD Threshold_H, UWORD Threshold_
 /******************************************************************************
 function:   Clear interrupt flag
 ******************************************************************************/
-static void TCS34725_Clear_Interrupt_Flag()
-{
-    TCS34725_WriteByte(TCS34725_CMD_Clear_INT, 0x00);
-}
+// static void TCS34725_Clear_Interrupt_Flag()
+// {
+//     TCS34725_WriteByte(TCS34725_CMD_Clear_INT, 0x00);
+// }
 
 /******************************************************************************
 function:   TCS34725 initialization

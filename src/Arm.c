@@ -222,14 +222,9 @@ void set_module_type(int module_type)
 
 void move_to(float x, float y, float z, int feedrate)
 {   
-    // if (!XY_limit(x,y)&&!Z_limit(z))
-    // {
-        char buffer[BUFFER_SIZE];
-        bool wait;
         char send_buffer[200];
         snprintf(send_buffer, 200, "G1 F%d X%f Y%f Z%f", feedrate, x, y, z);
         set_arm_cmd(send_buffer);
-    // }
 }
 
 void fast_move_to(float x, float y, float z, int feedrate)
@@ -335,7 +330,7 @@ void rotary_relative_rotate(int angle)
 {
     char send_buffer[200];
     snprintf(send_buffer, 200, "M2101 R%d", angle);
-    printf(send_buffer);
+    printf("%s", send_buffer);
     set_arm_cmd(send_buffer);
 }
 
@@ -343,7 +338,7 @@ void rotary_absolute_rotate(int angle)
 {
     char send_buffer[200];
     snprintf(send_buffer, 200, "M2101 P%d", angle);
-    printf(send_buffer);
+    printf("%s", send_buffer);
     set_arm_cmd(send_buffer);
 }
 
