@@ -12,4 +12,4 @@ int main()
     return 0;
 }
 // gcc proverka.c -o proverka -lm -lwiringPi -lpthread -ldopLibc
-// ./proverka
+// sudo ./proverka

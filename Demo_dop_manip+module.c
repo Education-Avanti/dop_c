@@ -294,4 +294,4 @@ int main()
 }
 
 // gcc Demo_dop_manip+module.c -o Demo_dop_manip+module -lwiringPi -lpthread -lm -ldopLibc
-// ./Demo_dop_manip+module
+// sudo ./Demo_dop_manip+module

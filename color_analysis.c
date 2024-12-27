@@ -141,4 +141,4 @@ int main()
     return 0;
 }
 
-//  gcc color_analysis.c -o color_analysis -lwiringPi -lpthread -lm -ldopLibc
+//  sudo gcc color_analysis.c -o color_analysis -lwiringPi -lpthread -lm -ldopLibc

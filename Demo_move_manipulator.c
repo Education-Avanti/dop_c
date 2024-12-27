@@ -89,4 +89,4 @@ int main(void) {
 }
 
 // gcc Demo_move_manipulator.c -o Demo_move_manipulator -lwiringPi -lpthread -lm -ldopLibc
-// ./Demo_move_manipulator
+// sudo ./Demo_move_manipulator
