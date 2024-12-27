@@ -31,7 +31,7 @@ void handle_signal(int signo) {
     }
 }
 
-void handle_continue(int signo) {
+void handle_continue() {
     if (serial_port > 0) {
         printf("Возобновление работы программы. Переподключение к DexArm...\n");
         configure_port(serial_port);
