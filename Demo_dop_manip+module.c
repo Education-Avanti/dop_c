@@ -8,7 +8,7 @@
 * | Date        :   2024-27-11
 * | Info        :
 ******************************************************************************/
-#include "include/Union.h"
+#include <Doplib_c.h>
 
 #define pos_1 23
 #define pos_2 131
@@ -293,4 +293,5 @@ int main()
 
 }
 
-// gcc Demo_dop_manip+module.c src/*.c -o Demo_dop_manip+module -lwiringPi -lpthread -lm
+// gcc Demo_dop_manip+module.c -o Demo_dop_manip+module -lwiringPi -lpthread -lm -ldopLibc
+// ./Demo_dop_manip+module

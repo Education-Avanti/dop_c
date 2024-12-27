@@ -8,7 +8,7 @@
 * | Date        :   2024-27-11
 * | Info        :
 ******************************************************************************/
-#include "include/Union.h"
+#include <Doplib_c.h>
 
 #define pos_1 23
 #define pos_2 131
@@ -141,4 +141,4 @@ int main()
     return 0;
 }
 
-//  gcc color_analysis.c src/*.c -o color_analysis -lwiringPi -lpthread -lm
+//  gcc color_analysis.c -o color_analysis -lwiringPi -lpthread -lm -ldopLibc

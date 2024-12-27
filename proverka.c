@@ -1,4 +1,4 @@
-#include <Union.h>
+#include <Doplib_c.h>
 
 int main()
 {
@@ -12,3 +12,4 @@ int main()
     return 0;
 }
 // gcc proverka.c -o proverka -lm -lwiringPi -lptrhread -ldopLibc
+// ./proverka
